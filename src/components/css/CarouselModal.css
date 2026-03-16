@@ -1,0 +1,189 @@
+/* =========================
+   MODAL BACKDROP
+========================= */
+
+.carousel-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+  padding: 20px;
+
+  animation: fadeIn 0.3s ease;
+}
+
+/* =========================
+   MODAL CONTAINER
+========================= */
+
+.carousel-modal {
+  width: 1000px;
+  max-width: 100%;
+  min-height: 520px;
+
+  display: flex;
+  background: white;
+  border-radius: 2px;
+  overflow: hidden;
+
+  animation: modalPop 0.35s ease;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes modalPop {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =========================
+   IMAGE SIDE
+========================= */
+
+.modal-image {
+  width: 50%;
+  height: auto;
+}
+
+.modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* =========================
+   CONTENT SIDE
+========================= */
+
+.modal-content {
+  width: 50%;
+  padding: 2.5rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.modal-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.modal-description {
+  text-align: left;
+  color: #555;
+  line-height: 1.6;
+}
+
+.modal-button {
+  display: block;
+  width: 160px;
+  padding: 12px 24px;
+  background: black;
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+.modal-role {
+  text-align: center;
+  font-style: italic;
+  color: #777;
+}
+
+.modal-tech {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.modal-tech img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+
+  .carousel-modal {
+    width: 95%;
+  }
+
+  .modal-content {
+    padding: 2rem;
+  }
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 640px) {
+
+  .carousel-modal {
+    flex-direction: column;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-image {
+    width: 100%;
+    height: 220px;
+  }
+
+  .modal-image img {
+    height: 100%;
+  }
+
+  .modal-content {
+    width: 100%;
+    padding: 1.8rem;
+  }
+
+  .modal-title {
+    font-size: 1.6rem;
+  }
+
+  .modal-description {
+    font-size: 0.95rem;
+  }
+
+  .modal-tech img {
+    width: 30px;
+    height: 30px;
+  }
+
+}

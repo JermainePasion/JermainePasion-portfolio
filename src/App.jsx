@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import TypingName from "./components/TypingName";
 import Navbar from "./components/Navbar";
 import EmblaCarousel from "./components/carousel/EmblaCarousel";
-import "./components/css/base.css"
-import "./components/css/embla.css"
-import "./components/css/sandbox.css"
 
+import "./components/css/base.css";
+import "./components/css/sandbox.css";
+import "./components/css/CarouselModal.css";
+import "./components/css/EmblaCarousel.css";
 
+import slides from "./components/carousel/slide"
 
-const SLIDES = [0, 1, 2, 3, 4];
 const OPTIONS = {
   align: "center",
   loop: false,
@@ -30,13 +31,13 @@ export default function App() {
   return (
     <>
       <Navbar visible={showNavbar} />
-      
+
       <section className="h-screen flex items-center justify-center">
         <TypingName />
       </section>
-      
+
       <section className="h-[120vh] flex items-center justify-center">
-        <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+        <EmblaCarousel slides={slides} options={OPTIONS} />
       </section>
     </>
   );
