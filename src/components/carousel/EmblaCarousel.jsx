@@ -1,26 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 
-import {
-  NextButton,
-  PrevButton,
-  usePrevNextButtons
-} from "./EmblaCarouselArrowButtons";
-
-import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
-
-const EmblaCarousel = ({ slides = [], options }) => {
+const EmblaCarousel = ({ slides, options }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
 
-  const { selectedIndex, scrollSnaps, onDotButtonClick } =
-    useDotButton(emblaApi);
+  useEffect(() => {
+    if (!emblaApi) return;
 
-  const {
-    prevBtnDisabled,
-    nextBtnDisabled,
-    onPrevButtonClick,
-    onNextButtonClick
-  } = usePrevNextButtons(emblaApi);
+    const engine = emblaApi.internalEngine();
+    const slides = emblaApi.slideNodes();
+    const snaps = emblaApi.scrollSnapList();
+
+    const tweenScale = () => {
+      const scrollProgress = emblaApi.scrollProgress();
+
+      slides.forEach((slide, index) => {
+        let diff = snaps[index] - scrollProgress;
+
+        // loop-aware distance
+        if (engine.options.loop) {
+          engine.slideLooper.loopPoints.forEach((loopItem) => {
+            const target = loopItem.target();
+            if (index === loopItem.index && target !== 0) {
+              diff = snaps[index] + (target > 0 ? 1 : -1) - scrollProgress;
+            }
+          });
+        }
+
+        const scale = Math.max(0.8, 1 - Math.abs(diff) * 1.5);
+        slide.style.transform = `scale(${scale})`;
+      });
+    };
+
+    emblaApi.on("scroll", tweenScale);
+    emblaApi.on("reInit", tweenScale);
+    emblaApi.on("select", tweenScale);
+
+    tweenScale();
+  }, [emblaApi]);
 
   return (
     <div className="embla">
@@ -28,30 +45,8 @@ const EmblaCarousel = ({ slides = [], options }) => {
         <div className="embla__container">
           {slides.map((_, index) => (
             <div className="embla__slide" key={index}>
-              <div className="embla__slide__number">
-                {index + 1}
-              </div>
+              <div className="embla__card">{index + 1}</div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="embla__controls">
-        <div className="embla__buttons">
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-        </div>
-
-        <div className="embla__dots">
-          {scrollSnaps.map((_, index) => (
-            <DotButton
-              key={index}
-              onClick={() => onDotButtonClick(index)}
-              className={
-                "embla__dot" +
-                (index === selectedIndex ? " embla__dot--selected" : "")
-              }
-            />
           ))}
         </div>
       </div>
