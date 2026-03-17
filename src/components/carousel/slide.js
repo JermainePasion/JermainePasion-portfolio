@@ -15,31 +15,78 @@ const slides = [
     ]
   },
   {
-    image: "/iot.jpg",
-    title: "IoT Smart Device Platform",
+    image: "/TrackYourToda.jpg",
+    title: "Track Your Toda",
     description:
       "A connected IoT platform that allows real-time monitoring and control of embedded devices using cloud APIs and web dashboards.",
     role: "Backend, IoT Integration",
     visit: "#",
     tech: [
-      "/icons/node.png",
-      "/icons/express.png",
-      "/icons/mqtt.png",
-      "/icons/react.png"
+      "/icons/React.png",
+      "/icons/Node.png",
+      "/icons/Express.png",
+      "/icons/Tailwind.png",
+      "/icons/Mongo.png"
     ]
   },
   {
-    image: "/cloud.jpg",
-    title: "Cloud Infrastructure Dashboard",
+    image: "/ExpenseTracker.jpg",
+    title: "Expense Tracker",
     description:
       "A scalable web dashboard for managing cloud services, monitoring metrics, and visualizing system performance across distributed infrastructure.",
     role: "Frontend, Cloud Architecture",
     visit: "#",
     tech: [
-      "/icons/react.png",
-      "/icons/aws.png",
-      "/icons/docker.png",
-      "/icons/tailwind.png"
+      "/icons/React.png",
+      "/icons/Node.png",
+      "/icons/Express.png",
+      "/icons/Tailwind.png",
+      "/icons/Mongo.png"
+    ]
+  },
+  {
+    image: "/ExpenseTracker.jpg",
+    title: "Expense Tracker",
+    description:
+      "A scalable web dashboard for managing cloud services, monitoring metrics, and visualizing system performance across distributed infrastructure.",
+    role: "Frontend, Cloud Architecture",
+    visit: "#",
+    tech: [
+      "/icons/React.png",
+      "/icons/Node.png",
+      "/icons/Express.png",
+      "/icons/Tailwind.png",
+      "/icons/Mongo.png"
+    ]
+  },
+  {
+    image: "/ExpenseTracker.jpg",
+    title: "Expense Tracker",
+    description:
+      "A scalable web dashboard for managing cloud services, monitoring metrics, and visualizing system performance across distributed infrastructure.",
+    role: "Frontend, Cloud Architecture",
+    visit: "#",
+    tech: [
+      "/icons/React.png",
+      "/icons/Node.png",
+      "/icons/Express.png",
+      "/icons/Tailwind.png",
+      "/icons/Mongo.png"
+    ]
+  },
+  {
+    image: "/ExpenseTracker.jpg",
+    title: "Expense Tracker",
+    description:
+      "A scalable web dashboard for managing cloud services, monitoring metrics, and visualizing system performance across distributed infrastructure.",
+    role: "Frontend, Cloud Architecture",
+    visit: "#",
+    tech: [
+      "/icons/React.png",
+      "/icons/Node.png",
+      "/icons/Express.png",
+      "/icons/Tailwind.png",
+      "/icons/Mongo.png"
     ]
   }
 ];
