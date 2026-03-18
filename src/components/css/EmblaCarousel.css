@@ -106,11 +106,10 @@
   }
 
   .embla__card {
-    height: 220px;
+    height: 480px; /* much taller */
     font-size: 2rem;
   }
 }
-
 
 .embla__card.selected .card-image {
   opacity: 0;
