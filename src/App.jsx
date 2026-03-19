@@ -9,6 +9,7 @@ import "./components/css/CarouselModal.css";
 import "./components/css/EmblaCarousel.css";
 
 import slides from "./components/carousel/slide"
+import Footer from "./components/Footer";
 
 const OPTIONS = {
   align: "center",
@@ -39,6 +40,10 @@ export default function App() {
       <section className="h-[120vh] flex items-center justify-center">
         <EmblaCarousel slides={slides} options={OPTIONS} />
       </section>
+
+      <footer>
+        <Footer/>
+      </footer>
     </>
   );
 }
