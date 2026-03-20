@@ -5,7 +5,7 @@ const slides = [
     description:
       "An AI-powered wearable system designed to monitor posture in real time using embedded sensors and machine learning. The system provides vibration feedback to correct poor posture and improve long-term spinal health.",
     role: "Full Stack, Machine Learning",
-    visit: "#",
+    visit: "https://ai-gyb.vercel.app/",
     tech: [
       "/icons/React.png",
       "/icons/Node.png",

@@ -32,7 +32,7 @@ export default function TypingName() {
 
   return (
     <h1
-      style={{ opacity }}
+      style={{ opacity, WebkitUserDrag: "none", userSelect: "none", pointerEvents: "none" }}
       className="
         font-bold tracking-widest text-center
         transition-opacity duration-300
@@ -42,6 +42,7 @@ export default function TypingName() {
         lg:text-7xl
         xl:text-8xl
         2xl:text-9xl
+        
       "
     >
       {displayText}

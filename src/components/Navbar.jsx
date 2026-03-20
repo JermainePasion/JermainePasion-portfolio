@@ -18,7 +18,7 @@ export default function Navbar({ visible }) {
           href="#projects"
           className="px-4 py-2 hover:opacity-60 transition"
         >
-          PROJECTS
+          ABOUT
         </a>
 
         <div className="w-px h-5 bg-black mx-2"></div>
@@ -27,7 +27,7 @@ export default function Navbar({ visible }) {
           href="#about"
           className="px-4 py-2 hover:opacity-60 transition"
         >
-          ABOUT
+          PROJECTS
         </a>
       </div>
     </div>

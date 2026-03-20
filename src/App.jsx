@@ -14,7 +14,8 @@ import Footer from "./components/Footer";
 const OPTIONS = {
   align: "center",
   loop: false,
-  containScroll: "trimSnaps"
+  containScroll: "trimSnaps",
+  axis: "y",
 };
 
 export default function App() {
@@ -37,7 +38,7 @@ export default function App() {
         <TypingName />
       </section>
 
-      <section className="h-[120vh] flex items-center justify-center">
+      <section className="flex items-center justify-center py-20">
         <EmblaCarousel slides={slides} options={OPTIONS} />
       </section>
 

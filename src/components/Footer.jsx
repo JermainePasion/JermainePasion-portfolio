@@ -31,7 +31,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="text-[#eeeeee] hover:underline hover:text-blue-500 transition"
               >
-                Jobs180 Link
+                Jobs180
               </a>
             </div>
           </div>
@@ -41,11 +41,19 @@ export default function Footer() {
 
         <div className="flex justify-center items-center">
           <div className="flex justify-center items-center gap-5 cursor-pointer">
-            <img src="https://www.svgrepo.com/show/303114/facebook-3-logo.svg" width="28" alt="fb" />
-            <img src="https://www.svgrepo.com/show/303115/twitter-3-logo.svg" width="28" alt="tw" />
-            <img src="https://www.svgrepo.com/show/303145/instagram-2-1-logo.svg" width="28" alt="inst" />
-            <img src="https://www.svgrepo.com/show/94698/github.svg" width="28" alt="gt" />
-            <img src="https://www.svgrepo.com/show/28145/linkedin.svg" width="28" alt="in" />
+            <a href="https://www.facebook.com/jermaineriley.pasion/" target="_blank">
+              <img src="https://www.svgrepo.com/show/303114/facebook-3-logo.svg" width="28" alt="fb" />
+            </a>
+
+            <a href="https://www.instagram.com/mainejerms/" target="_blank">
+                <img src="https://www.svgrepo.com/show/303145/instagram-2-1-logo.svg" width="28" alt="inst" />
+            </a>
+            <a href="https://github.com/JermainePasion" target="_blank">
+              <img src="https://www.svgrepo.com/show/94698/github.svg" width="28" alt="gt" />
+            </a>
+            <a href="https://www.linkedin.com/in/jermaine-pasion-67415a343/">
+              <img src="https://www.svgrepo.com/show/28145/linkedin.svg" width="28" alt="in" />
+            </a>
           </div>
         </div>
 
