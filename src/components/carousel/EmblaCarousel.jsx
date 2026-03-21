@@ -1,103 +1,200 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import CarouselModal from "./CarouselModal";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
-import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
-
 
 const EmblaCarousel = ({ slides, options }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ ...options, axis: "y" });
-  const [activeSlide, setActiveSlide] = useState(null);
-  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
-  
 
+  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [expandedOffset, setExpandedOffset] = useState(null);
+  const [modalSlide, setModalSlide] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
+
+  const slideRefs = useRef([]);
+
+  const { selectedIndex, scrollSnaps, onDotButtonClick } =
+    useDotButton(emblaApi);
+    
+
+  // Detect screen size
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Scaling effect
   useEffect(() => {
     if (!emblaApi) return;
 
-    const engine = emblaApi.internalEngine();
     const slideNodes = emblaApi.slideNodes();
-    const snaps = emblaApi.scrollSnapList();
 
     const tweenScale = () => {
-      if (activeSlide !== null) {
+      if (expandedIndex !== null) {
         slideNodes.forEach((slide, index) => {
-          slide.style.transform = `scale(${index === activeSlide ? 1 : 0.9})`;
-          slide.style.opacity = index === activeSlide ? "1" : "0.4";
+          if (index === expandedIndex) {
+            slide.style.transform = "scale(1)";
+            slide.style.opacity = "1";
+          } else {
+            slide.style.transform = "scale(1)";
+            slide.style.opacity = "0.3";
+          }
         });
         return;
       }
 
-      const scrollProgress = emblaApi.scrollProgress();
-
-      slideNodes.forEach((slide, index) => {
-        let diff = snaps[index] - scrollProgress;
-
-        if (engine.options.loop) {
-          engine.slideLooper.loopPoints.forEach((loopItem) => {
-            const target = loopItem.target();
-            if (index === loopItem.index && target !== 0) {
-              diff = snaps[index] + (target > 0 ? 1 : -1) - scrollProgress;
-            }
-          });
-        }
-
-        const scale = Math.max(0.8, 1 - Math.abs(diff) * 1.5);
-        const opacity = Math.max(0.4, 1 - Math.abs(diff) * 2);
-
-        slide.style.transform = `scale(${scale})`;
-        slide.style.opacity = String(opacity);
+      slideNodes.forEach((slide) => {
+        slide.style.transform = "scale(1)";
+        slide.style.opacity = "1";
       });
     };
 
-    emblaApi.on("scroll", tweenScale);
-    emblaApi.on("reInit", tweenScale);
     emblaApi.on("select", tweenScale);
+    emblaApi.on("reInit", tweenScale);
+
     tweenScale();
-    requestAnimationFrame(tweenScale);
-  }, [emblaApi, activeSlide]);
+  }, [emblaApi, expandedIndex]);
+
+  // Wheel scroll
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onWheel = (e) => {
+      if (expandedIndex !== null) return;
+
+      e.preventDefault();
+      if (e.deltaY > 0) emblaApi.scrollNext();
+      else emblaApi.scrollPrev();
+    };
+
+    const viewport = emblaApi.rootNode();
+    viewport.addEventListener("wheel", onWheel, { passive: false });
+
+    return () => viewport.removeEventListener("wheel", onWheel);
+  }, [emblaApi, expandedIndex]);
 
   useEffect(() => {
-  if (!emblaApi) return;
+    if (!emblaApi) return;
 
-  const onWheel = (e) => {
-    e.preventDefault();
-    if (e.deltaY > 0) {
-      emblaApi.scrollNext();
+    if (expandedIndex !== null) {
+      emblaApi.internalEngine().options.watchDrag = false;
     } else {
-      emblaApi.scrollPrev();
+      emblaApi.internalEngine().options.watchDrag = true;
+    }
+  }, [expandedIndex, emblaApi]);
+
+  const handleCardClick = (index, slide) => {
+    if (expandedIndex !== null && expandedIndex !== index) return;
+
+    if (isMobile) {
+      setModalSlide(slide);
+    } else {
+      if (index === expandedIndex) {
+        // Collapse
+        setExpandedIndex(null);
+        setExpandedOffset(null);
+      } else {
+        // Capture the slide's current top offset relative to the container
+        const el = slideRefs.current[index];
+        if (el) {
+          const container = el.closest(".embla__container");
+          const top = el.offsetTop - (container ? container.scrollTop : 0);
+          setExpandedOffset(top);
+        }
+        setExpandedIndex(index);
+      }
     }
   };
+  
 
-  const viewport = emblaApi.rootNode();
-  viewport.addEventListener("wheel", onWheel, { passive: false });
-
-  return () => {
-    viewport.removeEventListener("wheel", onWheel);
-  };
-}, [emblaApi]);
+  
 
   return (
     <>
-      <div className="embla-wrapper">
+      <div className={`embla-wrapper ${expandedIndex !== null ? "expanded" : ""}`}>
+        <h2 className="embla-label">
+          {"Projects".split("").map((char, i) => (
+            <span
+              key={i}
+              className="embla-label__char"
+              style={{
+                "--x": `${i * 0.65}em`, // 👈 where it came from
+                animationDelay: `${i * 60}ms`,
+              }}
+            >
+              {char}
+            </span>
+          ))}
+        </h2>
 
-        <h2 className="embla-label">Projects</h2>
-
-        <div className={`embla ${activeSlide !== null ? "dimmed" : ""}`}>
+        <div className={`embla ${expandedIndex !== null ? "dimmed expanded" : ""}`}>
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container">
-              {slides.map((slide, index) => (
-                <div className="embla__slide" key={index}>
+              {slides.map((slide, index) => {
+                const isExpanded = expandedIndex === index;
+
+                return (
                   <div
-                    className={`embla__card ${activeSlide === index ? "selected" : ""}`}
-                    onClick={() => setActiveSlide(index)}
+                    key={index}
+                    ref={(el) => (slideRefs.current[index] = el)}
+                    className={`embla__slide ${isExpanded ? "expanded" : ""}`}
+                    style={
+                      isExpanded && expandedOffset !== null
+                        ? { position: "absolute", top: expandedOffset, left: 0 }
+                        : {}
+                    }
                   >
-                    <img className="card-image" src={slide.image} />
-                    <div className="card-overlay">
-                      <h2>{slide.title}</h2>
+                    <div
+                      className={`embla__card ${isExpanded ? "expanded" : ""}`}
+                      onClick={() => handleCardClick(index, slide)}
+                    >
+                      <img className="card-image" src={slide.image} alt={slide.title} />
+
+                      <div className="card-overlay">
+                        {isExpanded && (
+                          <button
+                            className="close-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setExpandedIndex(null);
+                              setExpandedOffset(null);
+                            }}
+                          >
+                            ✕
+                          </button>
+                        )}
+                        <h2>{slide.title}</h2>
+
+                        {isExpanded && (
+                          <div className="expanded-content">
+                            <p>{slide.description}</p>
+
+                            <a
+                              href={slide.visit}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <button className="visit-btn">VISIT</button>
+                            </a>
+
+                            <p className="role">Role: {slide.role}</p>
+
+                            <div className="tech">
+                              {slide.tech?.map((tech, i) => (
+                                <img key={i} src={tech} alt="" />
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -106,18 +203,25 @@ const EmblaCarousel = ({ slides, options }) => {
           {scrollSnaps.map((_, index) => (
             <DotButton
               key={index}
-              onClick={() => onDotButtonClick(index)}
-              className={`embla__dot ${index === selectedIndex ? "embla__dot--selected" : ""}`}
+              onClick={() => {
+                if (expandedIndex !== null) return;
+                onDotButtonClick(index);
+              }}
+              className={`embla__dot ${
+                index === selectedIndex ? "embla__dot--selected" : ""
+              } ${expandedIndex !== null ? "disabled" : ""}`}
             />
           ))}
         </div>
-
       </div>
 
-      <CarouselModal
-        slide={activeSlide !== null ? slides[activeSlide] : null}
-        onClose={() => setActiveSlide(null)}
-      />
+      {/* MOBILE ONLY MODAL */}
+      {isMobile && (
+        <CarouselModal
+          slide={modalSlide}
+          onClose={() => setModalSlide(null)}
+        />
+      )}
     </>
   );
 };

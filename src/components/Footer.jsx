@@ -51,7 +51,7 @@ export default function Footer() {
             <a href="https://github.com/JermainePasion" target="_blank">
               <img src="https://www.svgrepo.com/show/94698/github.svg" width="28" alt="gt" />
             </a>
-            <a href="https://www.linkedin.com/in/jermaine-pasion-67415a343/">
+            <a href="https://www.linkedin.com/in/jermaine-pasion-67415a343/" target="_blank">
               <img src="https://www.svgrepo.com/show/28145/linkedin.svg" width="28" alt="in" />
             </a>
           </div>
