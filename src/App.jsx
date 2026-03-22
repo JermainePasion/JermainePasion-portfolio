@@ -3,6 +3,8 @@ import TypingName from "./components/TypingName";
 import Navbar from "./components/Navbar";
 import EmblaCarousel from "./components/carousel/EmblaCarousel";
 
+import AboutSection from "./components/AboutSection";
+
 import "./components/css/base.css";
 import "./components/css/sandbox.css";
 import "./components/css/CarouselModal.css";
@@ -36,6 +38,10 @@ export default function App() {
 
       <section className="h-screen flex items-center justify-center">
         <TypingName />
+      </section>
+
+       <section className="flex items-center justify-center overflow-x-hidden">
+        <AboutSection/>
       </section>
 
       <section className="flex items-center justify-center py-20">

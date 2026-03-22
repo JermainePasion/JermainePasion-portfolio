@@ -116,7 +116,7 @@ const EmblaCarousel = ({ slides, options }) => {
   return (
     <>
       <div className={`embla-wrapper ${expandedIndex !== null ? "expanded" : ""}`}>
-        <h2 className="embla-label">
+        <h2 className="embla-label" style={{ WebkitUserDrag: "none", userSelect: "none", pointerEvents: "none" }}>
           {"Projects".split("").map((char, i) => (
             <span
               key={i}
@@ -150,11 +150,11 @@ const EmblaCarousel = ({ slides, options }) => {
                   >
                     <div
                       className={`embla__card ${isExpanded ? "expanded" : ""}`}
-                      onClick={() => handleCardClick(index, slide)}
+                      onClick={() => handleCardClick(index, slide)} 
                     >
-                      <img className="card-image" src={slide.image} alt={slide.title} />
+                      <img className="card-image" src={slide.image} alt={slide.title} style={{ WebkitUserDrag: "none", userSelect: "none", pointerEvents: "none" }}/>
 
-                      <div className="card-overlay">
+                      <div className="card-overlay" >
                         {isExpanded && (
                           <button
                             className="close-btn"
@@ -170,8 +170,8 @@ const EmblaCarousel = ({ slides, options }) => {
                         <h2>{slide.title}</h2>
 
                         {isExpanded && (
-                          <div className="expanded-content">
-                            <p>{slide.description}</p>
+                          <div className="expanded-content" >
+                            <p style={{ WebkitUserDrag: "none", userSelect: "none", pointerEvents: "none" }}>{slide.description}</p>
 
                             <a
                               href={slide.visit}
