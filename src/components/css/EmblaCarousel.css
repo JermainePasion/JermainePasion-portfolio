@@ -274,13 +274,21 @@
 
 @media (max-width: 640px) {
   .embla-wrapper {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
   }
 
   .embla-label {
     grid-column: 1 / -1;
+
+    display: flex;
+    justify-content: center;  /* ✅ centers content */
+    align-items: center;
+
     text-align: center;
+    width: 100%;
+
+    white-space: normal; /* ✅ IMPORTANT */
   }
 
   .embla__viewport {
@@ -328,3 +336,43 @@
   transform: scale(0.9);
 }
 
+@media (max-width: 1024px) {
+  .embla-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 1.5rem;
+  }
+
+  .embla-label {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;  /* ✅ center horizontally */
+    align-items: center;
+
+    text-align: center;
+
+    white-space: normal; /* prevents overflow */
+  }
+
+  .embla {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .embla__viewport {
+    margin: 0 auto; /* ✅ centers carousel */
+  }
+
+  .embla__dots {
+    flex-direction: row; /* nicer on tablet */
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1024px) {
+  .embla-label {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+  }
+}

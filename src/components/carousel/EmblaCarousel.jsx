@@ -10,6 +10,7 @@ const EmblaCarousel = ({ slides, options }) => {
   const [expandedOffset, setExpandedOffset] = useState(null);
   const [modalSlide, setModalSlide] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= 1024);
 
   const slideRefs = useRef([]);
 
@@ -116,13 +117,14 @@ const EmblaCarousel = ({ slides, options }) => {
   return (
     <>
       <div className={`embla-wrapper ${expandedIndex !== null ? "expanded" : ""}`}>
-        <h2 className="embla-label" style={{ WebkitUserDrag: "none", userSelect: "none", pointerEvents: "none" }}>
+        <h2 className="embla-label " style={{ WebkitUserDrag: "none", userSelect: "none", pointerEvents: "none" }}>
           {"Projects".split("").map((char, i) => (
             <span
               key={i}
               className="embla-label__char"
               style={{
-                "--x": `${i * 0.65}em`, // 👈 where it came from
+                "--x": isMobile ? "0em" : `${i * 0.65}em`,
+                "--x": isTablet ? `${i * 0.2}em` : `${i * 0.65}em`,
                 animationDelay: `${i * 60}ms`,
               }}
             >
