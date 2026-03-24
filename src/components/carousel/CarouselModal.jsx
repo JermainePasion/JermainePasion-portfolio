@@ -1,6 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 const CarouselModal = ({ slide, onClose }) => {
   if (!slide) return null;
+
+  
 
   return (
     <div className="carousel-modal-backdrop" onClick={onClose}>

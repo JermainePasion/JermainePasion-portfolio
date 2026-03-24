@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import CarouselModal from "./CarouselModal";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
+import { createPortal } from "react-dom";
 
 const EmblaCarousel = ({ slides, options }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ ...options, axis: "y" });
@@ -12,15 +13,12 @@ const EmblaCarousel = ({ slides, options }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 1024);
 
-  const labelRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
   const slideRefs = useRef([]);
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
     
-  
+
 
   // Detect screen size
   useEffect(() => {
@@ -118,36 +116,12 @@ const EmblaCarousel = ({ slides, options }) => {
   };
   
 
-  useEffect(() => {
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        setIsVisible(true);
-      }
-    },
-    {
-      threshold: 0.4, // adjust trigger timing
-    }
-  );
-
-  if (labelRef.current) {
-    observer.observe(labelRef.current);
-  }
-
-  return () => {
-    if (labelRef.current) {
-      observer.unobserve(labelRef.current);
-    }
-  };
-}, []);
-
   
 
   return (
     <>
       <div className={`embla-wrapper ${expandedIndex !== null ? "expanded" : ""}`}>
-        <h2 className="embla-label " style={{ WebkitUserDrag: "none", userSelect: "none", pointerEvents: "none" }}
-          ref={labelRef}>
+        <h2 className="embla-label " style={{ WebkitUserDrag: "none", userSelect: "none", pointerEvents: "none" }}>
           {"Projects".split("").map((char, i) => (
             <span
               key={i}
@@ -246,12 +220,14 @@ const EmblaCarousel = ({ slides, options }) => {
         </div>
       </div>
 
-      {/* MOBILE ONLY MODAL */}
-      {isMobile && (
-        <CarouselModal
-          slide={modalSlide}
-          onClose={() => setModalSlide(null)}
-        />
+      {isMobile &&
+        modalSlide &&
+        createPortal(
+          <CarouselModal
+            slide={modalSlide}
+            onClose={() => setModalSlide(null)}
+          />,
+          document.body
       )}
     </>
   );
