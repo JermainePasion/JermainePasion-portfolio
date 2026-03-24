@@ -43,7 +43,7 @@ export default function App() {
       <section
         className="overflow-x-hidden"
         style={{
-          minHeight: "170vh",
+          minHeight: "190vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",

@@ -93,7 +93,7 @@ const techStack = [
   { label: "JavaScript",   color: "#F7DF1E", svg: ICONS.javascript },
   { label: "C++",          color: "#6295CB", svg: ICONS.cplusplus },
   { label: "Git",          color: "#F05032", svg: ICONS.git },
-  { label: "GitHub",       color: "#FFFFFF", svg: ICONS.github },
+  { label: "GitHub",       color: "#000000", svg: ICONS.github },
   { label: "Postman",      color: "#FF6C37", svg: ICONS.postman },
   { label: "Canva",        color: "#00C4CC", svg: ICONS.canva },
   { label: "Figma",        color: "#F24E1E", svg: ICONS.figma },

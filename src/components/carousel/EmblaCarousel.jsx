@@ -12,18 +12,24 @@ const EmblaCarousel = ({ slides, options }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 1024);
 
+  const labelRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
   const slideRefs = useRef([]);
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
     
+  
 
   // Detect screen size
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 640);
+     const handleResize = () => {
+    setIsMobile(window.innerWidth <= 640);
+    setIsTablet(window.innerWidth <= 1024);
     };
 
+    handleResize(); // run once
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -112,19 +118,42 @@ const EmblaCarousel = ({ slides, options }) => {
   };
   
 
+  useEffect(() => {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+      }
+    },
+    {
+      threshold: 0.4, // adjust trigger timing
+    }
+  );
+
+  if (labelRef.current) {
+    observer.observe(labelRef.current);
+  }
+
+  return () => {
+    if (labelRef.current) {
+      observer.unobserve(labelRef.current);
+    }
+  };
+}, []);
+
   
 
   return (
     <>
       <div className={`embla-wrapper ${expandedIndex !== null ? "expanded" : ""}`}>
-        <h2 className="embla-label " style={{ WebkitUserDrag: "none", userSelect: "none", pointerEvents: "none" }}>
+        <h2 className="embla-label " style={{ WebkitUserDrag: "none", userSelect: "none", pointerEvents: "none" }}
+          ref={labelRef}>
           {"Projects".split("").map((char, i) => (
             <span
               key={i}
               className="embla-label__char"
               style={{
-                "--x": isMobile ? "0em" : `${i * 0.65}em`,
-                "--x": isTablet ? `${i * 0.2}em` : `${i * 0.65}em`,
+                "--x": isMobile || isTablet ? "0em" : `${i * 0.65}em`,
                 animationDelay: `${i * 60}ms`,
               }}
             >
