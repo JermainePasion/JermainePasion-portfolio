@@ -51,11 +51,7 @@ function calcTransform(progress, enterFrom, exitTo) {
 
   return { tx, ty, rot, opacity };
 }
-/**
- * sectionRef — ref to the TALL outer section (200vh)
- * The animation progress is based on that section's scroll position,
- * so progress=0.5 only when the section's true center is in the viewport center.
- */
+
 export default function ScrollReveal({ enterFrom = "left", exitTo = "right", sectionRef, children }) {
   const wrapRef = useRef(null);
   const rafRef  = useRef(null);
@@ -66,16 +62,12 @@ export default function ScrollReveal({ enterFrom = "left", exitTo = "right", sec
     if (!el) return;
 
     const update = () => {
-      // Use the passed sectionRef if available, otherwise fall back up the DOM
       const section = sectionRef?.current ?? el.parentElement?.parentElement;
       if (!section) return;
 
       const rect     = section.getBoundingClientRect();
       const vh       = window.innerHeight;
 
-      // progress 0: section top == viewport bottom (just about to enter)
-      // progress 0.5: section center == viewport center
-      // progress 1: section bottom == viewport top (fully exited)
       const total    = rect.height + vh;
       const passed   = vh - rect.top;
       const rawProgress = passed / total;
