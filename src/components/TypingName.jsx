@@ -42,7 +42,6 @@ export default function TypingName() {
     return () => clearTimeout(timeout);
   }, [displayName]);
 
-  // Scroll fade
   useEffect(() => {
     const handleScroll = () => {
       const fadePoint = 200;

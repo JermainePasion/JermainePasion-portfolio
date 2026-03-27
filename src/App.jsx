@@ -39,7 +39,6 @@ export default function App() {
         <TypingName />
       </section>
 
-      {/* About — tall section, enters from left, exits right */}
       <section
         className="overflow-x-hidden"
         style={{
@@ -57,7 +56,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Carousel — tall section, enters from right, exits left */}
       <section
         className="overflow-x-hidden"
         style={{
