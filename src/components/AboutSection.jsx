@@ -419,7 +419,7 @@ export default function AboutSection() {
         >
 
           <img
-            src="https://placehold.co/200x200/111118/444?text=You"
+            src="Jermaine.png"
             alt="Profile"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
@@ -435,7 +435,7 @@ export default function AboutSection() {
               letterSpacing: "-0.015em",
             }}
           >
-            Your Name
+            Who I Am
           </h2>
           <p
             style={{

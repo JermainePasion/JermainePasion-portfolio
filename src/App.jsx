@@ -12,11 +12,12 @@ import "./components/css/EmblaCarousel.css";
 
 import slides from "./components/carousel/slide";
 import Footer from "./components/Footer";
+import Skills from "./components/carousel/Skills";
 
 const OPTIONS = {
   align: "center",
   loop: false,
-  containScroll: "trimSnaps",
+  containScroll: false,
   axis: "y",
 };
 
@@ -31,6 +32,18 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Clamp minHeight so the carousel section isn't impossibly tall
+  // on short-viewport devices like Nest Hub (600px tall).
+  // 170vh on a 600px screen = 1020px of scroll just for this section.
+  // We cap it so the sticky element is reachable without excessive scrolling.
+  const carouselSectionStyle = {
+    minHeight: "clamp(900px, 170vh, 170vh)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+  };
+
   return (
     <>
       <Navbar visible={showNavbar} />
@@ -42,7 +55,7 @@ export default function App() {
       <section
         className="overflow-x-hidden"
         style={{
-          minHeight: "190vh",
+          minHeight: "250vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -56,17 +69,30 @@ export default function App() {
         </div>
       </section>
 
+      <section>
+        <div>
+          <Skills />
+        </div>
+      </section>
+
+      {/*
+        minHeight clamped to avoid Nest Hub (1024×600) needing to scroll
+        excessively before the sticky carousel becomes visible.
+        On tall screens 170vh still applies; on short screens it floors at 900px.
+      */}
       <section
         className="overflow-x-hidden"
-        style={{
-          minHeight: "170vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-        }}
+        style={carouselSectionStyle}
       >
-        <div style={{ position: "sticky", top: "50%", transform: "translateY(-50%)", width: "100%", padding: "5rem 0" }}>
+        <div
+          style={{
+            position: "sticky",
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: "100%",
+            padding: "5rem 0",
+          }}
+        >
           <ScrollReveal enterFrom="right" exitTo="left">
             <EmblaCarousel slides={slides} options={OPTIONS} />
           </ScrollReveal>

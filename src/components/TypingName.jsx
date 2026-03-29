@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 export default function TypingName() {
   const nameText = "JERMAINE PASION";
-  const roleText = "Software Engineer";
+  const roleText = "Software Developer";
 
   const [displayName, setDisplayName] = useState("");
   const [displayRole, setDisplayRole] = useState("");
