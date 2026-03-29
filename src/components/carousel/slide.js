@@ -1,7 +1,7 @@
 const slides = [
   {
     image: "/ai.jpg",
-    title: "AI-GYB",
+    title: "AI Got Your Back",
     description:
       "An AI-powered wearable system designed to monitor posture in real time using embedded sensors and machine learning. The system provides vibration feedback to correct poor posture and improve long-term spinal health.",
     role: "Full Stack, Machine Learning",
@@ -18,9 +18,24 @@ const slides = [
     image: "/TrackYourToda.jpg",
     title: "Track Your Toda",
     description:
-      "A connected IoT platform that allows real-time monitoring and control of embedded devices using cloud APIs and web dashboards.",
-    role: "Backend, IoT Integration",
-    visit: "#",
+      "A mobile app that gives accurate estimations of tricycle fares based on current fare matrix.",
+    role: "Fullstack",
+    visit: "https://www.linkedin.com/posts/jermaine-pasion-67415a343_as-a-college-student-in-angeles-city-pampanga-activity-7363256282255904768-msr2?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFX8WDgBTETQtqFGuD4YHz1P53bKwG4hnAo",
+    tech: [
+      "/icons/React.png",
+      "/icons/Node.png",
+      "/icons/Express.png",
+      "/icons/Tailwind.png",
+      "/icons/Mongo.png"
+    ]
+  },
+  {
+    image: "/BrgyKantotino.jpg",
+    title: "Brgy. Kantotiño",
+    description:
+      "Enables citizens to report city issues in real time through a web application, providing instant feedback and improving communication between the public and local authorities.",
+    role: "Fullstack",
+    visit: "https://barangay-kanto-tino.vercel.app/",
     tech: [
       "/icons/React.png",
       "/icons/Node.png",
@@ -33,9 +48,9 @@ const slides = [
     image: "/ExpenseTracker.jpg",
     title: "Expense Tracker",
     description:
-      "A scalable web dashboard for managing cloud services, monitoring metrics, and visualizing system performance across distributed infrastructure.",
-    role: "Frontend, Cloud Architecture",
-    visit: "#",
+      "A personalized web app that helps track and guide you with expenses and savings.",
+    role: "Fullstack",
+    visit: "https://expense-tracker-68j7g0lhs-jermaine-pasions-projects.vercel.app/login",
     tech: [
       "/icons/React.png",
       "/icons/Node.png",
@@ -45,12 +60,12 @@ const slides = [
     ]
   },
   {
-    image: "/ExpenseTracker.jpg",
-    title: "Expense Tracker",
+    image: "/3DPriceCalculator.jpg",
+    title: "3D Printing Price Calculator",
     description:
-      "A scalable web dashboard for managing cloud services, monitoring metrics, and visualizing system performance across distributed infrastructure.",
-    role: "Frontend, Cloud Architecture",
-    visit: "#",
+      "A Calculator that helps you price your 3D printed products with the help of an A.I chatbot powered by Gemini flash 2.5.",
+    role: "Fullstack, Prompt Engineering",
+    visit: "https://3d-printing-price-calculator-vert.vercel.app/",
     tech: [
       "/icons/React.png",
       "/icons/Node.png",
@@ -59,36 +74,6 @@ const slides = [
       "/icons/Mongo.png"
     ]
   },
-  {
-    image: "/ExpenseTracker.jpg",
-    title: "Expense Tracker",
-    description:
-      "A scalable web dashboard for managing cloud services, monitoring metrics, and visualizing system performance across distributed infrastructure.",
-    role: "Frontend, Cloud Architecture",
-    visit: "#",
-    tech: [
-      "/icons/React.png",
-      "/icons/Node.png",
-      "/icons/Express.png",
-      "/icons/Tailwind.png",
-      "/icons/Mongo.png"
-    ]
-  },
-  {
-    image: "/ExpenseTracker.jpg",
-    title: "Expense Tracker",
-    description:
-      "A scalable web dashboard for managing cloud services, monitoring metrics, and visualizing system performance across distributed infrastructure.",
-    role: "Frontend, Cloud Architecture",
-    visit: "#",
-    tech: [
-      "/icons/React.png",
-      "/icons/Node.png",
-      "/icons/Express.png",
-      "/icons/Tailwind.png",
-      "/icons/Mongo.png"
-    ]
-  }
 ];
 
 export default slides;
