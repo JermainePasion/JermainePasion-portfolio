@@ -110,7 +110,13 @@ const EmblaCarousel = ({ slides, options }) => {
   return (
     <>
       <div className={`embla-wrapper ${expandedIndex !== null ? "expanded" : ""}`}>
-        <h2 className="embla-label">
+        <h2 className="embla-label"
+        style={{
+          WebkitUserDrag: "none",
+          userSelect: "none",
+          pointerEvents: "none",
+        }}
+        >
           {"Projects".split("").map((char, i) => (
             <span
               key={i}
@@ -159,7 +165,13 @@ const EmblaCarousel = ({ slides, options }) => {
                           </button>
                         )}
 
-                        <h2>{slide.title}</h2>
+                        <h2 
+                        style={{
+                          WebkitUserDrag: "none",
+                          userSelect: "none",
+                          pointerEvents: "none",
+                        }}
+                        >{slide.title}</h2>
 
                         {isExpanded && (
                           <div className="expanded-content">
