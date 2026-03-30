@@ -6,3 +6,13 @@ body {
   font-family: "Noto Sans", sans-serif;
   background: #EEEEEE;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Offset anchor scroll position */
+#about,
+#projects {
+  scroll-margin-bottom: 800px; /* adjust this */
+}

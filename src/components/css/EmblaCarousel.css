@@ -49,7 +49,7 @@
 ========================= */
 
 .embla {
-  position: relative;
+  position: relative; /* ✅ anchor for dots */
   overflow: visible;
   min-width: 0;
 }
@@ -57,7 +57,7 @@
 .embla__viewport {
   overflow: hidden;
   width: 340px;
-  height: clamp(280px, 60vh, 520px); /* 🔥 responsive height */
+  height: clamp(280px, 60vh, 520px);
   margin-left: auto;
   transition: all 0.5s ease;
 }
@@ -201,47 +201,36 @@
 }
 
 /* =========================
-   DOTS
+   DOTS (FIXED)
 ========================= */
 
-/* Desktop (vertical) */
-@media (min-width: 1281px) {
-  .embla__dots {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-  }
-  }
+.embla__dots {
+  position: absolute;
 
-/* Everything else (tablet, mobile, Nest Hub) */
-@media (max-width: 1280px) {
-  .embla__dots {
-    display: flex;
-    flex-direction: row !important;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 12px;
-  }
+  right: clamp(8px, 2vw, 24px); /* 🔥 responsive spacing */
+  top: 50%;
+  transform: translateY(-50%);
 
-  .embla__dot {
-    width: 10px;
-    height: 10px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  z-index: 50;
 }
 
 .embla__dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #ccc;
   border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .embla__dot--selected {
   background: black;
+  transform: scale(1.3);
 }
 
 /* =========================
@@ -279,13 +268,13 @@
   }
 
   .embla__viewport {
-    width: 100%;
+    width: 85%; 
     height: 380px;
   }
 }
 
 /* =========================
-   TABLET / FOLD / SURFACE
+   TABLET
 ========================= */
 
 @media (max-width: 1024px) {
@@ -310,17 +299,17 @@
     text-align: center;
     white-space: normal;
   }
-  
 }
 
 /* =========================
-   SHORT SCREENS (NEST HUB FIX)
+   SHORT SCREENS
 ========================= */
 
 @media (max-height: 700px) {
   .embla-wrapper {
     padding: 1rem 1.5rem;
     gap: 1rem;
+    align-items: flex-start;
   }
 
   .embla-label {
@@ -336,8 +325,4 @@
   }
 }
 
-@media (max-height: 700px) {
-  .embla-wrapper {
-    align-items: flex-start; 
-  }
-}
+

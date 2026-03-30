@@ -33,14 +33,6 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const carouselSectionStyle = {
-    minHeight: "clamp(900px, 170vh, 170vh)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
-  };
-
   return (
     <>
       <Navbar visible={showNavbar} />
@@ -50,6 +42,7 @@ export default function App() {
       </section>
 
       <section
+        id="about"
         className="overflow-x-hidden"
         style={{
           minHeight: "250vh",
@@ -66,15 +59,20 @@ export default function App() {
         </div>
       </section>
 
-      <section>
-        <div>
-          <Skills />
-        </div>
+      <section id="skills">
+        <Skills />
       </section>
 
       <section
+        id="projects"
         className="overflow-x-hidden"
-        style={carouselSectionStyle}
+        style={{
+          minHeight: "clamp(900px, 170vh, 170vh)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+        }}
       >
         <div
           style={{
@@ -91,8 +89,8 @@ export default function App() {
         </div>
       </section>
 
-      <section className="h-screen flex items-center justify-center">
-        <ContactMe/>
+      <section id="contact" className="h-screen flex items-center justify-center">
+        <ContactMe />
       </section>
 
       <footer>
