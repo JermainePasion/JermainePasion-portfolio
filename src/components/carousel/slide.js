@@ -67,7 +67,7 @@ const slides = [
     description:
       "Showcase website for me and my partner's BIR registered printing business",
     role: "Frontend, UI/UX",
-    visit: "https://3d-printing-price-calculator-vert.vercel.app/",
+    visit: "https://squirkle-website.vercel.app/",
     tech: [
       "/icons/React.png",
       "/icons/Tailwind.png",
