@@ -52,7 +52,11 @@ export default function Footer() {
               <img src="https://www.svgrepo.com/show/94698/github.svg" width="28" alt="gt" />
             </a>
             <a href="https://www.linkedin.com/in/jermaine-pasion-67415a343/" target="_blank">
-              <img src="https://www.svgrepo.com/show/28145/linkedin.svg" width="28" alt="in" />
+              <img 
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" 
+                width="28" 
+                alt="linkedin" 
+              />
             </a>
           </div>
         </div>
