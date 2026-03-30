@@ -15,7 +15,9 @@
     "vite": "^7.3.1"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@tailwindcss/vite": "^4.2.1",
+    "emailjs": "^5.0.0",
     "embla-carousel-react": "^8.6.0",
     "embla-carousel-wheel-gestures": "^8.1.0",
     "react": "^19.2.4",

@@ -13,6 +13,7 @@ import "./components/css/EmblaCarousel.css";
 import slides from "./components/carousel/slide";
 import Footer from "./components/Footer";
 import Skills from "./components/carousel/Skills";
+import ContactMe from "./components/ContactMe";
 
 const OPTIONS = {
   align: "center",
@@ -32,10 +33,6 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Clamp minHeight so the carousel section isn't impossibly tall
-  // on short-viewport devices like Nest Hub (600px tall).
-  // 170vh on a 600px screen = 1020px of scroll just for this section.
-  // We cap it so the sticky element is reachable without excessive scrolling.
   const carouselSectionStyle = {
     minHeight: "clamp(900px, 170vh, 170vh)",
     display: "flex",
@@ -75,11 +72,6 @@ export default function App() {
         </div>
       </section>
 
-      {/*
-        minHeight clamped to avoid Nest Hub (1024×600) needing to scroll
-        excessively before the sticky carousel becomes visible.
-        On tall screens 170vh still applies; on short screens it floors at 900px.
-      */}
       <section
         className="overflow-x-hidden"
         style={carouselSectionStyle}
@@ -97,6 +89,10 @@ export default function App() {
             <EmblaCarousel slides={slides} options={OPTIONS} />
           </ScrollReveal>
         </div>
+      </section>
+
+      <section className="h-screen flex items-center justify-center">
+        <ContactMe/>
       </section>
 
       <footer>

@@ -11,7 +11,8 @@ const slides = [
       "/icons/Node.png",
       "/icons/Express.png",
       "/icons/Tailwind.png",
-      "/icons/Mongo.png"
+      "/icons/Mongo.png",
+      "/icons/Tensorflow.png"
     ]
   },
   {
@@ -25,7 +26,6 @@ const slides = [
       "/icons/React.png",
       "/icons/Node.png",
       "/icons/Express.png",
-      "/icons/Tailwind.png",
       "/icons/Mongo.png"
     ]
   },
@@ -41,7 +41,37 @@ const slides = [
       "/icons/Node.png",
       "/icons/Express.png",
       "/icons/Tailwind.png",
-      "/icons/Mongo.png"
+      "/icons/Mongo.png",
+      "/icons/Firebase.png"
+    ]
+  },
+  {
+    image: "/3DPriceCalculator.jpg",
+    title: "3D Printing Price Calculator",
+    description:
+      "A Calculator that helps you price your 3D printed products with the help of an A.I chatbot powered by Gemini flash 2.5.",
+    role: "Fullstack, Prompt Engineering",
+    visit: "https://3d-printing-price-calculator-vert.vercel.app/",
+    tech: [
+      "/icons/React.png",
+      "/icons/Node.png",
+      "/icons/Express.png",
+      "/icons/Tailwind.png",
+      "/icons/Mongo.png",
+      "/icons/Gemini.png"
+    ]
+  },
+  {
+    image: "/Squirkle.jpg",
+    title: "Squirkle Printing Services",
+    description:
+      "Showcase website for me and my partner's BIR registered printing business",
+    role: "Frontend, UI/UX",
+    visit: "https://3d-printing-price-calculator-vert.vercel.app/",
+    tech: [
+      "/icons/React.png",
+      "/icons/Tailwind.png",
+      "/icons/Figma.svg",
     ]
   },
   {
@@ -59,21 +89,7 @@ const slides = [
       "/icons/Mongo.png"
     ]
   },
-  {
-    image: "/3DPriceCalculator.jpg",
-    title: "3D Printing Price Calculator",
-    description:
-      "A Calculator that helps you price your 3D printed products with the help of an A.I chatbot powered by Gemini flash 2.5.",
-    role: "Fullstack, Prompt Engineering",
-    visit: "https://3d-printing-price-calculator-vert.vercel.app/",
-    tech: [
-      "/icons/React.png",
-      "/icons/Node.png",
-      "/icons/Express.png",
-      "/icons/Tailwind.png",
-      "/icons/Mongo.png"
-    ]
-  },
+  
 ];
 
 export default slides;
