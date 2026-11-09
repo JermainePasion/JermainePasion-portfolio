@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jermaine-pasion-portfolio.vercel.app/sitemap.xml
+Sitemap: https://jermainepasion.com/sitemap.xml

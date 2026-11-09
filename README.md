@@ -1,6 +1,6 @@
 # Jermaine Pasion — Portfolio
 
-Personal portfolio site: https://jermaine-pasion-portfolio.vercel.app
+Personal portfolio site: https://jermainepasion.com
 
 Built with React 19, Vite 7, Tailwind CSS 4, Embla Carousel and EmailJS.
 
