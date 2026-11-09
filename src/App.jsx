@@ -3,17 +3,15 @@ import TypingName from "./components/TypingName";
 import Navbar from "./components/Navbar";
 import EmblaCarousel from "./components/carousel/EmblaCarousel";
 import AboutSection from "./components/AboutSection";
+import Experience from "./components/Experience";
 import ScrollReveal from "./components/ScrollReveal";
+import Skills from "./components/Skills";
+import ContactMe from "./components/ContactMe";
+import Footer from "./components/Footer";
+import projects from "./data/projects";
 
-import "./components/css/base.css";
-import "./components/css/sandbox.css";
 import "./components/css/CarouselModal.css";
 import "./components/css/EmblaCarousel.css";
-
-import slides from "./components/carousel/slide";
-import Footer from "./components/Footer";
-import Skills from "./components/carousel/Skills";
-import ContactMe from "./components/ContactMe";
 
 const OPTIONS = {
   align: "center",
@@ -26,10 +24,9 @@ export default function App() {
   const [showNavbar, setShowNavbar] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowNavbar(window.scrollY > 150);
-    };
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setShowNavbar(window.scrollY > 150);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -37,65 +34,50 @@ export default function App() {
     <>
       <Navbar visible={showNavbar} />
 
-      <section className="h-screen flex items-center justify-center">
-        <TypingName />
-      </section>
+      <main>
+        <section className="h-screen flex items-center justify-center">
+          <TypingName />
+        </section>
 
-      <section
-        id="about"
-        className="overflow-x-hidden"
-        style={{
-          minHeight: "250vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-        }}
-      >
-        <div style={{ position: "sticky", top: "50%", transform: "translateY(-50%)", width: "100%" }}>
-          <ScrollReveal enterFrom="left" exitTo="right">
-            <AboutSection />
-          </ScrollReveal>
-        </div>
-      </section>
-
-      <section id="skills">
-        <Skills />
-      </section>
-
-      <section
-        id="projects"
-        className="overflow-x-hidden"
-        style={{
-          minHeight: "clamp(900px, 170vh, 170vh)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            position: "sticky",
-            top: "50%",
-            transform: "translateY(-50%)",
-            width: "100%",
-            padding: "5rem 0",
-          }}
+        {/* Tall sections with a sticky inner box: the content animates in and out as you scroll (ScrollReveal). */}
+        <section
+          id="about"
+          data-reveal
+          className="relative flex items-center justify-center overflow-x-clip min-h-[200vh] md:min-h-[250vh]"
         >
-          <ScrollReveal enterFrom="right" exitTo="left">
-            <EmblaCarousel slides={slides} options={OPTIONS} />
-          </ScrollReveal>
-        </div>
-      </section>
+          <div className="sticky top-1/2 -translate-y-1/2 w-full">
+            <ScrollReveal enterFrom="left" exitTo="right">
+              <AboutSection />
+            </ScrollReveal>
+          </div>
+        </section>
 
-      <section id="contact" className="h-screen flex items-center justify-center">
-        <ContactMe />
-      </section>
+        <section id="experience" className="scroll-mt-20">
+          <Experience />
+        </section>
 
-      <footer>
-        <Footer />
-      </footer>
+        <section id="skills" className="scroll-mt-20">
+          <Skills />
+        </section>
+
+        <section
+          id="projects"
+          data-reveal
+          className="relative flex items-center justify-center overflow-x-clip min-h-[max(900px,170vh)]"
+        >
+          <div className="sticky top-1/2 -translate-y-1/2 w-full py-20">
+            <ScrollReveal enterFrom="right" exitTo="left">
+              <EmblaCarousel slides={projects} options={OPTIONS} />
+            </ScrollReveal>
+          </div>
+        </section>
+
+        <section id="contact" className="min-h-screen flex items-center justify-center scroll-mt-20">
+          <ContactMe />
+        </section>
+      </main>
+
+      <Footer />
     </>
   );
 }

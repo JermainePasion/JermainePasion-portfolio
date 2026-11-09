@@ -1,129 +1,134 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import CarouselModal from "./CarouselModal";
-import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
 import { createPortal } from "react-dom";
+import CarouselModal from "./CarouselModal";
+import ProjectLinks from "./ProjectLinks";
+import { DotButton } from "./EmblaCarouselDotButton";
+import { useDotButton } from "./useDotButton";
+
+const WHEEL_COOLDOWN_MS = 450;
+const WHEEL_THRESHOLD = 30;
+
+const isCompact = () => window.innerWidth <= 1280;
 
 const EmblaCarousel = ({ slides, options }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ ...options, axis: "y" });
 
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [modalSlide, setModalSlide] = useState(null);
-
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
-  const [isTablet, setIsTablet] = useState(
-    window.innerWidth > 640 && window.innerWidth <= 1280
-  );
+  const [compact, setCompact] = useState(isCompact);
 
-  const slideRefs = useRef([]);
+  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
 
-  const { selectedIndex, scrollSnaps, onDotButtonClick } =
-    useDotButton(emblaApi);
-
-  // ✅ Responsive detection (fixed)
+  // Phone and tablet open a modal; desktop expands the card in place.
   useEffect(() => {
     const handleResize = () => {
-      const w = window.innerWidth;
-      setIsMobile(w <= 640);
-      setIsTablet(w > 640 && w <= 1280);
+      setIsMobile(window.innerWidth <= 640);
+      setCompact(isCompact());
     };
-
-    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ✅ Fade effect
+  // Dim the other slides while one is expanded.
   useEffect(() => {
     if (!emblaApi) return;
-
-    const slideNodes = emblaApi.slideNodes();
-
     const tween = () => {
-      slideNodes.forEach((slide, index) => {
-        if (expandedIndex !== null && index !== expandedIndex) {
-          slide.style.opacity = "0.3";
-        } else {
-          slide.style.opacity = "1";
-        }
+      emblaApi.slideNodes().forEach((slide, index) => {
+        slide.style.opacity = expandedIndex !== null && index !== expandedIndex ? "0.3" : "1";
       });
     };
-
-    emblaApi.on("select", tween);
-    emblaApi.on("reInit", tween);
-
+    emblaApi.on("select", tween).on("reInit", tween);
     tween();
+    return () => {
+      emblaApi.off("select", tween).off("reInit", tween);
+    };
   }, [emblaApi, expandedIndex]);
 
-  // ✅ Wheel scroll (ONLY when not expanded)
+  // Mouse wheel moves one slide at a time, but only while there is a slide to move to.
+  // At the first/last slide the wheel event is left alone so the page keeps scrolling.
   useEffect(() => {
     if (!emblaApi) return;
+    let lockedUntil = 0;
+    let accumulated = 0;
 
     const onWheel = (e) => {
       if (expandedIndex !== null) return;
+      if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+
+      const goingDown = e.deltaY > 0;
+      const canMove = goingDown ? emblaApi.canScrollNext() : emblaApi.canScrollPrev();
+      if (!canMove) {
+        accumulated = 0;
+        return;
+      }
 
       e.preventDefault();
+      const now = performance.now();
+      if (now < lockedUntil) return;
 
-      if (e.deltaY > 0) emblaApi.scrollNext();
+      accumulated += e.deltaY;
+      if (Math.abs(accumulated) < WHEEL_THRESHOLD) return;
+
+      accumulated = 0;
+      lockedUntil = now + WHEEL_COOLDOWN_MS;
+      if (goingDown) emblaApi.scrollNext();
       else emblaApi.scrollPrev();
     };
 
     const viewport = emblaApi.rootNode();
     viewport.addEventListener("wheel", onWheel, { passive: false });
-
     return () => viewport.removeEventListener("wheel", onWheel);
   }, [emblaApi, expandedIndex]);
 
-  // ✅ Sync expanded ONLY if already expanded
+  // Keep the expanded card in sync when the carousel moves.
   useEffect(() => {
     if (!emblaApi) return;
-
     const onSelect = () => {
       const index = emblaApi.selectedScrollSnap();
-
       setExpandedIndex((prev) => (prev === null ? null : index));
     };
-
     emblaApi.on("select", onSelect);
-    return () => emblaApi.off("select", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
   }, [emblaApi]);
 
-  const handleCardClick = (index, slide) => {
+  const openCard = (index, slide) => {
     if (!emblaApi) return;
-
     emblaApi.scrollTo(index);
 
-    // ✅ Modal for ALL non-desktop
-    if (isMobile || isTablet) {
+    if (compact) {
       setModalSlide(slide);
       return;
     }
+    setExpandedIndex((prev) => (prev === index ? null : index));
+  };
 
-    // ✅ Desktop expand behavior
-    if (expandedIndex === index) {
-      setExpandedIndex(null);
-    } else {
-      setExpandedIndex(index);
+  const onCardClick = (index, slide) => (e) => {
+    if (e.target.closest("a, button")) return;
+    openCard(index, slide);
+  };
+
+  const onCardKeyDown = (index, slide) => (e) => {
+    if (e.target !== e.currentTarget) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openCard(index, slide);
     }
   };
 
   return (
     <>
       <div className={`embla-wrapper ${expandedIndex !== null ? "expanded" : ""}`}>
-        <h2 className="embla-label"
-        style={{
-          WebkitUserDrag: "none",
-          userSelect: "none",
-          pointerEvents: "none",
-        }}
-        >
+        <h2 className="embla-label select-none" aria-label="Projects">
           {"Projects".split("").map((char, i) => (
             <span
               key={i}
+              aria-hidden="true"
               className="embla-label__char"
-              style={{
-                "--x": isMobile || isTablet ? "0em" : `${i * 0.65}em`,
-              }}
+              style={{ "--x": isMobile || compact ? "0em" : `${i * 0.65}em` }}
             >
               {char}
             </span>
@@ -137,57 +142,50 @@ const EmblaCarousel = ({ slides, options }) => {
                 const isExpanded = expandedIndex === index;
 
                 return (
-                  <div
-                    key={index}
-                    ref={(el) => (slideRefs.current[index] = el)}
-                    className={`embla__slide ${isExpanded ? "expanded" : ""}`}
-                  >
+                  <div key={slide.title} className={`embla__slide ${isExpanded ? "expanded" : ""}`}>
                     <div
                       className={`embla__card ${isExpanded ? "expanded" : ""}`}
-                      onClick={() => handleCardClick(index, slide)}
+                      onClick={onCardClick(index, slide)}
+                      onKeyDown={isExpanded ? undefined : onCardKeyDown(index, slide)}
+                      role={isExpanded ? undefined : "button"}
+                      tabIndex={isExpanded ? undefined : 0}
+                      aria-label={isExpanded ? undefined : `${slide.title}: show details`}
                     >
                       <img
                         className="card-image"
                         src={slide.image}
-                        alt={slide.title}
+                        alt={isExpanded ? `Screenshot of ${slide.title}` : ""}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                        draggable="false"
                       />
 
                       <div className="card-overlay">
                         {isExpanded && (
                           <button
+                            type="button"
                             className="close-btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setExpandedIndex(null);
-                            }}
+                            aria-label="Close details"
+                            onClick={() => setExpandedIndex(null)}
                           >
                             ✕
                           </button>
                         )}
 
-                        <h2 
-                        style={{
-                          WebkitUserDrag: "none",
-                          userSelect: "none",
-                          pointerEvents: "none",
-                        }}
-                        >{slide.title}</h2>
+                        <h3 className="card-title select-none">{slide.title}</h3>
 
                         {isExpanded && (
                           <div className="expanded-content">
                             <p>{slide.description}</p>
-
-                            <a href={slide.visit} target="_blank">
-                              <button className="visit-btn">VISIT</button>
-                            </a>
-
+                            <ProjectLinks slide={slide} />
                             <p className="role">Role: {slide.role}</p>
-
-                            <div className="tech">
-                              {slide.tech?.map((tech, i) => (
-                                <img key={i} src={tech} alt="" />
+                            <ul className="tech" aria-label="Built with">
+                              {slide.tech?.map((t) => (
+                                <li key={t.name}>
+                                  <img src={t.icon} alt={t.name} title={t.name} loading="lazy" />
+                                </li>
                               ))}
-                            </div>
+                            </ul>
                           </div>
                         )}
                       </div>
@@ -199,34 +197,27 @@ const EmblaCarousel = ({ slides, options }) => {
           </div>
         </div>
 
-        {/* ✅ DOTS (fixed behavior) */}
-        <div className="embla__dots">
+        <div className="embla__dots" role="group" aria-label="Choose project">
           {scrollSnaps.map((_, index) => (
             <DotButton
               key={index}
+              aria-label={`Go to ${slides[index]?.title ?? `project ${index + 1}`}`}
+              aria-current={index === selectedIndex ? "true" : undefined}
               onClick={() => {
                 onDotButtonClick(index);
-
                 // only expand if already expanded (desktop)
-                setExpandedIndex((prev) =>
-                  prev !== null && !(isMobile || isTablet) ? index : prev
-                );
+                setExpandedIndex((prev) => (prev !== null && !compact ? index : prev));
               }}
-              className={`embla__dot ${
-                index === selectedIndex ? "embla__dot--selected" : ""
-              }`}
+              className={`embla__dot ${index === selectedIndex ? "embla__dot--selected" : ""}`}
             />
           ))}
         </div>
       </div>
 
-      {(isMobile || isTablet) &&
+      {compact &&
         modalSlide &&
         createPortal(
-          <CarouselModal
-            slide={modalSlide}
-            onClose={() => setModalSlide(null)}
-          />,
+          <CarouselModal slide={modalSlide} onClose={() => setModalSlide(null)} />,
           document.body
         )}
     </>

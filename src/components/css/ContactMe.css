@@ -232,3 +232,15 @@
     font-size: 1rem;
   }
 }
+/* Honeypot field: off-screen so people never see it */
+.contact-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.contact-feedback a {
+  text-decoration: underline;
+}

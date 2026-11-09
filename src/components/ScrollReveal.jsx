@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 
 const STYLE_ID = "scroll-reveal-styles";
 
@@ -25,7 +26,7 @@ function calcTransform(progress, enterFrom, exitTo) {
 
     tx = fromX * (1 - ease);
 
-    // 🔥 START HIGH, curve DOWN into center
+    // start high, curve down into center
     ty = -200 * (1 - ease);  
 
     rot = (enterFrom === "left" ? -35 : 35) * (1 - ease);
@@ -41,7 +42,7 @@ function calcTransform(progress, enterFrom, exitTo) {
 
     tx = toX * ease;
 
-    // 🔥 KEEP GOING UP (not symmetric anymore)
+    // keep going up on exit (not symmetric)
     ty = -200 * ease;
 
     rot = (exitTo === "right" ? 20 : -20) * ease;
@@ -62,6 +63,11 @@ export default function ScrollReveal({ enterFrom = "left", exitTo = "right", sec
     if (!el) return;
 
     const update = () => {
+      if (prefersReducedMotion()) {
+        el.style.transform = "none";
+        el.style.opacity = "1";
+        return;
+      }
       const section = sectionRef?.current ?? el.parentElement?.parentElement;
       if (!section) return;
 

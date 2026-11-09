@@ -1,0 +1,102 @@
+/* Tech ring in the About section */
+
+.ring-outer {
+  position: relative;
+  flex-shrink: 0;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.ring-outer:active {
+  cursor: grabbing;
+}
+
+.ring-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ring-center-label {
+  margin-top: 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #2d2c2c;
+}
+
+.ring-item {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
+  background: color-mix(in srgb, var(--c) 4%, transparent);
+  color: var(--c);
+  opacity: 0.5;
+  cursor: pointer;
+  z-index: 1;
+  transition: width 0.2s, height 0.2s, border-color 0.2s, background 0.2s, opacity 0.2s;
+}
+
+.ring-item:hover,
+.ring-item:focus-visible {
+  width: 66px;
+  height: 66px;
+  opacity: 0.8;
+  border-color: color-mix(in srgb, var(--c) 65%, transparent);
+  background: color-mix(in srgb, var(--c) 10%, transparent);
+}
+
+.ring-item:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+.ring-item.is-active {
+  width: 72px;
+  height: 72px;
+  opacity: 1;
+  border: 1.5px solid var(--c);
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+  z-index: 20;
+}
+
+.ring-item svg {
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .ring-outer {
+    transform: scale(0.62);
+    transform-origin: top center;
+  }
+  .ring-outer-wrap {
+    height: 290px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .ring-outer {
+    transform: scale(0.8);
+    transform-origin: top left;
+  }
+  .ring-outer-wrap {
+    height: 370px;
+  }
+}

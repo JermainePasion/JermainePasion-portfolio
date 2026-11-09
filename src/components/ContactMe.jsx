@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import site from "../data/site";
 import emailjs from "@emailjs/browser";
 import "./css/ContactMe.css";
 
@@ -6,12 +7,14 @@ const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 // Initialize EmailJS with the public key once at module level
-emailjs.init(PUBLIC_KEY);
+if (PUBLIC_KEY) emailjs.init(PUBLIC_KEY);
 
 const ContactMe = () => {
   const formRef = useRef(null);
-  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [status, setStatus] = useState("idle"); // idle | validation | invalid-email | sending | success | error
   const [focused, setFocused] = useState(null);
   const [empty, setEmpty] = useState([]);
 
@@ -24,6 +27,13 @@ const ContactMe = () => {
     const email = form.user_email.value.trim();
     const message = form.message.value.trim();
 
+    // Honeypot: real visitors never see or fill this field; bots usually do.
+    if (form.website.value) {
+      setStatus("success");
+      form.reset();
+      return;
+    }
+
     if (!name || !email || !message) {
       setStatus("validation");
       setEmpty([
@@ -31,6 +41,11 @@ const ContactMe = () => {
         !email   && "email",
         !message && "message",
       ].filter(Boolean));
+      return;
+    }
+    if (!EMAIL_PATTERN.test(email)) {
+      setStatus("invalid-email");
+      setEmpty(["email"]);
       return;
     }
     setEmpty([]);
@@ -49,8 +64,7 @@ const ContactMe = () => {
     setStatus("sending");
 
     try {
-      const result = await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current);
-      console.log("EmailJS success:", result);
+      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current);
       setStatus("success");
       formRef.current.reset();
     } catch (err) {
@@ -123,6 +137,12 @@ const ContactMe = () => {
             />
           </div>
 
+          {/* Honeypot field, hidden from people and screen readers */}
+          <div className="contact-hp" aria-hidden="true">
+            <label htmlFor="contact-website">Website</label>
+            <input id="contact-website" type="text" name="website" tabIndex={-1} autoComplete="off" />
+          </div>
+
           <div className="contact-footer">
             <button
               type="submit"
@@ -145,18 +165,24 @@ const ContactMe = () => {
             </button>
 
             {status === "validation" && (
-              <p className="contact-feedback error">
+              <p className="contact-feedback error" role="alert">
                 Please fill in all fields before sending.
               </p>
             )}
+            {status === "invalid-email" && (
+              <p className="contact-feedback error" role="alert">
+                Please enter a valid email address.
+              </p>
+            )}
             {status === "success" && (
-              <p className="contact-feedback success">
+              <p className="contact-feedback success" role="status">
                 ✓ Message sent — I'll be in touch soon.
               </p>
             )}
             {status === "error" && (
-              <p className="contact-feedback error">
-                Something went wrong. Please try again.
+              <p className="contact-feedback error" role="alert">
+                Something went wrong. Please try again, or email me at{" "}
+                <a href={`mailto:${site.email}`}>{site.email}</a>.
               </p>
             )}
           </div>

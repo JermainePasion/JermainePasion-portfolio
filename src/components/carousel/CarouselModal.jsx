@@ -1,45 +1,93 @@
-import React, {useEffect} from "react";
-const CarouselModal = ({ slide, onClose }) => {
-  if (!slide) return null;
+import React, { useEffect, useRef } from "react";
+import ProjectLinks from "./ProjectLinks";
 
-  
+const CarouselModal = ({ slide, onClose }) => {
+  const closeRef = useRef(null);
+  const dialogRef = useRef(null);
+
+  // Escape closes, focus moves into the dialog, page scroll is locked while open.
+  useEffect(() => {
+    const previouslyFocused = document.activeElement;
+    closeRef.current?.focus();
+
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      // keep Tab inside the dialog
+      const focusables = dialogRef.current.querySelectorAll("a[href], button");
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = overflow;
+      previouslyFocused?.focus?.({ preventScroll: true });
+    };
+  }, [onClose]);
+
+  if (!slide) return null;
 
   return (
     <div className="carousel-modal-backdrop" onClick={onClose}>
-      <div className="carousel-modal" onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={dialogRef}
+        className="carousel-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="carousel-modal-title"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          ref={closeRef}
+          type="button"
+          className="modal-close"
+          aria-label="Close"
+          onClick={onClose}
+        >
+          ✕
+        </button>
 
         <div className="modal-image">
-          <img src={slide.image} />
+          <img src={slide.image} alt={`Screenshot of ${slide.title}`} />
         </div>
 
         <div className="modal-content">
+          <h3 id="carousel-modal-title" className="modal-title">
+            {slide.title}
+          </h3>
 
-          <div className="modal-title">{slide.title}</div>
+          <p className="modal-description">{slide.description}</p>
 
-          <div className="modal-description">{slide.description}</div>
+          <ProjectLinks slide={slide} className="modal-links" />
 
-          <a href={slide.visit} target="_blank" rel="noopener noreferrer">
-            <button className="modal-button group relative overflow-hidden px-6 py-2 border border-zinc-900 tracking-widest text-sm font-medium text-zinc-900 transition-colors duration-300 hover:text-white">
-              <span className="relative z-10">VISIT</span>
-              <span className="absolute inset-0 bg-zinc-900 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
-            </button>
-          </a>
+          <p className="modal-role">Role: {slide.role}</p>
 
-          <div className="modal-role">
-            Role: {slide.role}
-          </div>
-
-          <div className="modal-tech">
-            {slide.tech?.map((tech, i) => (
-              <img key={i} src={tech} />
+          <ul className="modal-tech" aria-label="Built with">
+            {slide.tech?.map((t) => (
+              <li key={t.name}>
+                <img src={t.icon} alt={t.name} title={t.name} />
+              </li>
             ))}
-          </div>
-
+          </ul>
         </div>
-
       </div>
     </div>
   );
 };
 
-export default CarouselModal
+export default CarouselModal;

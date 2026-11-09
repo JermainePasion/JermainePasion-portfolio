@@ -1,18 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
-
 @import "tailwindcss";
 
-body {
-  font-family: "Noto Sans", sans-serif;
-  background: #EEEEEE;
+@theme {
+  --font-sans: "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Offset anchor scroll position */
-#about,
-#projects {
-  scroll-margin-bottom: 800px; /* adjust this */
+body {
+  font-family: var(--font-sans);
+  background: #eeeeee;
+  color: #111;
+  line-height: 1.65;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
