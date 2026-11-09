@@ -166,8 +166,8 @@ export default function AboutSection() {
   const active = techStack[activeIndex];
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 flex flex-col md:flex-row items-center gap-12 md:gap-20">
-      <div className="flex-shrink-0 flex flex-col items-center w-full md:w-auto select-none">
+    <section className="w-full max-w-6xl mx-auto px-6 md:px-12 py-16 md:py-24 flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 lg:gap-20">
+      <div className="order-2 md:order-1 flex-shrink-0 flex flex-col items-center w-full md:w-auto select-none">
         <div className="ring-outer-wrap">
           <div
             ref={containerRef}
@@ -234,8 +234,8 @@ export default function AboutSection() {
         </p>
       </div>
 
-      <div className="flex flex-col items-center md:items-start gap-6 flex-1 min-w-0 text-center md:text-left w-full">
-        <div className="w-[200px] h-[200px] rounded-full overflow-hidden border border-black/15 bg-[#ddd] shrink-0">
+      <div className="order-1 md:order-2 flex flex-col items-center md:items-start gap-5 md:gap-6 w-full md:w-[400px] md:flex-none text-center md:text-left">
+        <div className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] rounded-full overflow-hidden border border-black/15 bg-[#ddd] shrink-0">
           <img
             src="/Jermaine.webp"
             alt="Jermaine Pasion"
@@ -249,7 +249,7 @@ export default function AboutSection() {
           <h2 className="text-[26px] font-semibold text-[#2D2C2C] mb-2.5 tracking-[-0.015em]">
             Who I Am
           </h2>
-          <p className="text-[15px] leading-[1.85] text-[#2D2C2C] max-w-[400px] m-0">
+          <p className="text-[15px] leading-[1.85] text-[#2D2C2C] max-w-[400px] mx-auto md:mx-0 my-0">
             I'm a full-stack developer at Clean Edge Manpower Solutions, building the company's HR
             system on web and mobile. I graduated in Computer Engineering from Holy Angel University
             in 2026, and I work mainly with React, React Native, TypeScript and Supabase.

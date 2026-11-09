@@ -40,13 +40,14 @@ export default function App() {
         </section>
 
         {/* Tall sections with a sticky inner box: the content animates in and out as you scroll (ScrollReveal). */}
+        {/* On phones About is a normal section (too tall to pin); from md up it's pinned and animated. */}
         <section
           id="about"
           data-reveal
-          className="relative flex items-center justify-center overflow-x-clip min-h-[200vh] md:min-h-[250vh]"
+          className="relative flex items-center justify-center overflow-x-clip scroll-mt-16 md:min-h-[250vh]"
         >
-          <div className="sticky top-1/2 -translate-y-1/2 w-full">
-            <ScrollReveal enterFrom="left" exitTo="right">
+          <div className="w-full md:sticky md:top-1/2 md:-translate-y-1/2">
+            <ScrollReveal enterFrom="left" exitTo="right" minWidth={768}>
               <AboutSection />
             </ScrollReveal>
           </div>

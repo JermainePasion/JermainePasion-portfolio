@@ -53,7 +53,8 @@ function calcTransform(progress, enterFrom, exitTo) {
   return { tx, ty, rot, opacity };
 }
 
-export default function ScrollReveal({ enterFrom = "left", exitTo = "right", sectionRef, children }) {
+// minWidth: below this viewport width the content is shown without the scroll animation.
+export default function ScrollReveal({ enterFrom = "left", exitTo = "right", sectionRef, minWidth = 0, children }) {
   const wrapRef = useRef(null);
   const rafRef  = useRef(null);
 
@@ -63,7 +64,7 @@ export default function ScrollReveal({ enterFrom = "left", exitTo = "right", sec
     if (!el) return;
 
     const update = () => {
-      if (prefersReducedMotion()) {
+      if (prefersReducedMotion() || window.innerWidth < minWidth) {
         el.style.transform = "none";
         el.style.opacity = "1";
         return;
@@ -97,7 +98,7 @@ export default function ScrollReveal({ enterFrom = "left", exitTo = "right", sec
       window.removeEventListener("resize", update);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [enterFrom, exitTo, sectionRef]);
+  }, [enterFrom, exitTo, sectionRef, minWidth]);
 
   return (
     <div ref={wrapRef} className="sr-wrap" style={{ width: "100%", opacity: 0 }}>
